@@ -86,7 +86,7 @@ public class UsuariosController : ControllerBase
         }
     }
 
-    [HttpDelete("users/{id: int}")]
+    [HttpDelete("users/delete/{id: int}")]
     public ActionResult DeleteUsuario(int id)
     {
         var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);

@@ -88,7 +88,7 @@ public class ProdutosController : ControllerBase
         }
     }
 
-    [HttpDelete("products/{id: int}")]
+    [HttpDelete("products/delete/{id: int}")]
     public ActionResult DeleteProduto(int id)
     {
         try

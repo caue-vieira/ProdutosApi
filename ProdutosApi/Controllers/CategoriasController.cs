@@ -65,7 +65,7 @@ public class CategoriasController : ControllerBase
         }
     }
 
-    [HttpDelete("categories/{id: int}")]
+    [HttpDelete("categories/delete/{id: int}")]
     public ActionResult DeleteCategoria(int id)
     {
         var categoria = _context.Categorias.FirstOrDefault(c => c.CategoriaId == id);
