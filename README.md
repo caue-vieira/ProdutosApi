@@ -25,6 +25,8 @@ Esta é uma API de exemplo construída com ASP.NET para gerenciar produtos.
 
 4. Acesse a API através do Swagger.
 
+# Endpoints
+
 ## Produtos:
 
 ### Listar produto por ID (GET)
