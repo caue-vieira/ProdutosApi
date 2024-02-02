@@ -17,8 +17,8 @@ public class UsuariosController : ControllerBase
         _context = context;
     }
 
-    [HttpPost("users/signup")]
-    public ActionResult UsuarioModel (UsuarioModel usuario)
+    [HttpPost("signup")]
+    public ActionResult UsuarioModel(UsuarioModel usuario)
     {
         try
         {
@@ -46,27 +46,34 @@ public class UsuariosController : ControllerBase
         }
     }
 
-    [HttpGet("users/{id: int}")]
+    [HttpGet("{id:int}")]
     public ActionResult<UsuarioModel> UsuarioById(int id)
     {
         try
         {
             var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
-            if(usuario is null)
+            if (usuario is null)
             {
                 return NotFound("Usuário não encontrado");
+            } else if((usuario.TipoUsuario ?? "").Equals("cliente", StringComparison.OrdinalIgnoreCase))
+            {
+                return Ok(usuario);
             }
-            return usuario;
-        } catch(Exception)
+            else
+            {
+                return BadRequest("O usuário não é um cliente");
+            }
+        }
+        catch (Exception)
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 "Ocorreu um erro ao buscar os dados do usuário");
         }
     }
 
-    //[HttpPost("users/login")] realizar depois por conter token JWT
+    ////[HttpPost("users/login")] realizar depois por conter token JWT
 
-    [HttpPut("users/update/{id: int}")]
+    [HttpPut("update/{id:int}")]
     public ActionResult UpdateUsuario(int id, UsuarioModel usuario)
     {
         try
@@ -86,17 +93,25 @@ public class UsuariosController : ControllerBase
         }
     }
 
-    [HttpDelete("users/delete/{id: int}")]
+    [HttpDelete("delete/{id:int}")]
     public ActionResult DeleteUsuario(int id)
     {
-        var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
-        if(usuario is null)
+        try
         {
-            return NotFound("Usuário não encontrado");
-        }
-        _context.Usuarios.Remove(usuario);
-        _context.SaveChanges();
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == id);
+            if (usuario is null)
+            {
+                return NotFound("Usuário não encontrado");
+            }
+            _context.Usuarios.Remove(usuario);
+            _context.SaveChanges();
 
-        return Ok();
+            return Ok();
+        }
+        catch (Exception)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                "Ocorreu um erro ao excluir o usuário");
+        }
     }
 }

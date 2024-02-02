@@ -17,7 +17,7 @@ public class ProdutosController : ControllerBase
         _context = context;
     }
 
-    [HttpPost("products/new")]
+    [HttpPost("new")]
     public ActionResult CadastraProduto(ProdutoModel produto)
     {
         try
@@ -30,33 +30,35 @@ public class ProdutosController : ControllerBase
             _context.SaveChanges();
 
             return Created();
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 "Ocorreu um erro ao cadastrar o produto");
         }
     }
 
-    [HttpPut("products/update/{id: int}")]
+    [HttpPut("update/{id:int}")]
     public ActionResult AlteraProduto(int id, ProdutoModel produto)
     {
         try
         {
-            if(id != produto.ProdutoId)
+            if (id != produto.ProdutoId)
             {
                 return BadRequest("Id de produto inválido");
             }
             _context.Entry(produto).State = EntityState.Modified;
             _context.SaveChanges();
             return Ok();
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 "Ocorreu um erro ao buscar alterar o produto");
         }
     }
 
-    [HttpGet("products/{id: int}")]
+    [HttpGet("{id:int}")]
     public ActionResult<ProdutoModel> ProdutoById(int id)
     {
         try
@@ -75,20 +77,21 @@ public class ProdutosController : ControllerBase
         }
     }
 
-    [HttpGet("products")]
-    public ActionResult<IEnumerable<ProdutoModel>> ListarProdutos() 
+    [HttpGet]
+    public ActionResult<IEnumerable<ProdutoModel>> ListarProdutos()
     {
         try
         {
             return _context.Produtos.ToList();
-        } catch(Exception)
+        }
+        catch (Exception)
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 "Ocorreu um erro ao buscar os produtos");
         }
     }
 
-    [HttpDelete("products/delete/{id: int}")]
+    [HttpDelete("delete/{id:int}")]
     public ActionResult DeleteProduto(int id)
     {
         try

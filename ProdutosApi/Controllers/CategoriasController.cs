@@ -17,7 +17,7 @@ public class CategoriasController : ControllerBase
         _context = context;
     }
 
-    [HttpPost("categories/new")]
+    [HttpPost("new")]
     public ActionResult CadastrarCategoria(CategoriaModel categoria)
     {
         try
@@ -38,20 +38,21 @@ public class CategoriasController : ControllerBase
         }
     }
 
-    [HttpGet("categories")]
+    [HttpGet]
     public ActionResult<IEnumerable<CategoriaModel>> ListaCategorias()
     {
         try
         {
             return _context.Categorias.ToList();
-        } catch (Exception)
+        }
+        catch (Exception)
         {
             return StatusCode(StatusCodes.Status500InternalServerError,
                 "Ocorreu um erro ao buscar as categorias");
         }
     }
 
-    [HttpGet("categories/{id: int}/products")]
+    [HttpGet("{id:int}/products")]
     public ActionResult<IEnumerable<CategoriaModel>> ListaProdutoCategoria(int id)
     {
         try
@@ -65,11 +66,11 @@ public class CategoriasController : ControllerBase
         }
     }
 
-    [HttpDelete("categories/delete/{id: int}")]
+    [HttpDelete("delete/{id:int}")]
     public ActionResult DeleteCategoria(int id)
     {
         var categoria = _context.Categorias.FirstOrDefault(c => c.CategoriaId == id);
-        if(categoria is null)
+        if (categoria is null)
         {
             return NotFound("Categoria não encontrada");
         }
